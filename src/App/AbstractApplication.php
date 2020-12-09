@@ -4,6 +4,7 @@ namespace Roiwk\UmengOpenAPI\App;
 
 use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\APIId;
 use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\APIRequest;
+use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\exception\OceanException;
 use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\policy\ClientPolicy;
 use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\policy\RequestPolicy;
 use Roiwk\UmengOpenAPI\com\alibaba\openapi\client\SyncAPIClient;
@@ -127,7 +128,7 @@ abstract class AbstractApplication
      */
     public function api(string $name, string $httpMethod = 'POST'): self
     {
-        $this->apiName = $name;
+        $this->apiName = lcfirst($name);
         $this->setRequestConig('httpMethod', $httpMethod);
         $this->paramObject = $this->getParamObject();
         $this->resultObject = $this->getResultObject();
@@ -143,7 +144,13 @@ abstract class AbstractApplication
      */
     public function param(array $param): self
     {
-        $this->paramObject->setDataSourceId($this->config['app_key']);
+        if (method_exists($this->paramObject, 'setDataSourceId')) { //umini
+            $this->paramObject->setDataSourceId($this->config['app_key']);
+        } else if (method_exists($this->paramObject, 'setAppkey')){ //uapp || apptrack
+            $this->paramObject->setAppkey($this->config['app_key']);
+        } else {
+            // ..
+        }
         foreach ($param as $key => $value) {
             $method = 'set' . ucfirst($key);
             call_user_func_array([$this->paramObject, $method], [$value]);

@@ -1,6 +1,6 @@
 {
     "name": "roiwk/umeng-open-api",
-    "description": "OpenAPI,官方sdk封装.",
+    "description": "Umeng OpenAPI,官方sdk封装.",
     "keywords": [
         "umeng", "Open API", "友盟", "sdk", "analytics", "分析", "统计"
     ],
@@ -15,7 +15,6 @@
     "require": {
     },
     "require-dev": {
-        "nette/finder": "^2.5"
     },
     "autoload": {
         "psr-4": {
