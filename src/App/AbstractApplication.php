@@ -48,8 +48,14 @@ abstract class AbstractApplication
      * @var array
      */
     private $defaultParam = [
+        // umini 分页参数
         'pageIndex' => 1,
-        'pageSize'  => 30,
+        'pageSize'  => 10,
+        // apptrack 分页参数
+        'pageNum'   => 1,
+        // uapp 分页参数
+        'page'      => 1,
+        'perPage'   => 10,
     ];
 
     /**
