@@ -161,7 +161,9 @@ abstract class AbstractApplication
         $param = array_merge($this->defaultParam, $param);
         foreach ($param as $key => $value) {
             $method = 'set' . ucfirst($key);
-            call_user_func_array([$this->paramObject, $method], [$value]);
+            if (method_exists($this->paramObject, $method)){
+                call_user_func_array([$this->paramObject, $method], [$value]);
+            }
         }
         return $this;
     }
