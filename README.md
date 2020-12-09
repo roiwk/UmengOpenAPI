@@ -23,6 +23,8 @@ $app = Factory::umini([
     'api_key'       => 'your key',
     'api_secret'    => 'your secret',
     'app_key'       => 'your APPKEY',
+    // 指定 API 调用返回结果的类型：json(default)/array/object/raw(resultObject)
+    'response_type' => 'json',
 ]);
 
 // 参数1:api名 (com.umeng.umini:umeng.umini.getTotalUser-1, 传"getShareOverview" 即可)
@@ -30,7 +32,7 @@ $app = Factory::umini([
 $app->get('getShareOverview', [
     'fromDate'  => '2020-11-01',
     'toDate'    => '2020-11-01',
-    'timeUnit'    => 'day',
+    'timeUnit'  => 'day',
     'pageIndex' => 1,
     'pageSize'  => 10,
 ]);

@@ -19,7 +19,7 @@ class SyncAPIClient
     {
         $this->clientPolicy = $clientPolicy;
     }
-    public function send(APIRequest $request, $resultDefiniation, RequestPolicy $requestPolicy)
+    public function send(APIRequest $request, $resultDefiniation, RequestPolicy $requestPolicy, bool $returnContent = false)
     {
         $urlRequest = $this->generateRequestPath($request, $requestPolicy, $this->clientPolicy);
         if ($requestPolicy->useHttps) {
@@ -90,6 +90,9 @@ class SyncAPIClient
             $deSerializerTools = SerializerProvider::getDeSerializer($requestPolicy->responseProtocol);
             $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
+            if ($returnContent) {
+                return $content;
+            }
             if ($status >= 400 && $status <= 599) {
                 $resultException = $deSerializerTools->buildException($content, $resultDefiniation);
                 throw $resultException;

@@ -9,8 +9,6 @@ return [
     // 应用信息里的APPKEY
     'app_key' => '',
 
-     // 指定 API 调用返回结果的类型：array(default)/json/object/raw
-    'response_type' => 'array',
-
-    
+    // 指定 API 调用返回结果的类型：array/json(default)/object/raw
+    'response_type' => 'json',
 ];

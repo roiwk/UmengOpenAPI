@@ -47,12 +47,23 @@ abstract class AbstractApplication
     /**
      * @var array
      */
-    private $defaultRequestConfig = [
-        'needAuthorization'    => false,
-        'requestSendTimestamp' => false,
-        'useHttps'             => true,
-        'useSignture'          => true,
-        'accessPrivateApi'     => false,
+    private $defaultParam = [
+        'pageIndex' => 1,
+        'pageSize'  => 30,
+    ];
+
+    /**
+     * @var array
+     */
+    private $defaultConfig = [
+        'request_policy' => [ //request config
+            'needAuthorization'    => false,
+            'requestSendTimestamp' => false,
+            'useHttps'             => true,
+            'useSignture'          => true,
+            'accessPrivateApi'     => false,
+        ],
+        'response_type' => 'array',
     ];
 
     /**
@@ -91,11 +102,7 @@ abstract class AbstractApplication
         $this->clientPolicy = new ClientPolicy($config['api_key'], $config['api_secret'], $config['server_host'] ?? $this->serverHost);
         $this->syncAPIClient = new SyncAPIClient($this->clientPolicy);
         $this->requestPolicy = new RequestPolicy();
-        $this->config = array_replace_recursive(
-            $this->config,
-            ['request_policy' => $this->defaultRequestConfig],
-            $this->config['request_policy'] ?? []
-        );
+        $this->config = array_replace_recursive($this->defaultConfig, $this->config);
         $this->setRequestConig($this->config['request_policy']);
     }
 
@@ -151,6 +158,7 @@ abstract class AbstractApplication
         } else {
             // ..
         }
+        $param = array_merge($this->defaultParam, $param);
         foreach ($param as $key => $value) {
             $method = 'set' . ucfirst($key);
             call_user_func_array([$this->paramObject, $method], [$value]);
@@ -164,7 +172,7 @@ abstract class AbstractApplication
      *
      * @return self
      */
-    public function get(string $name, array $param, string $httpMethod = 'POST')
+    public function get(string $name, array $param = [], string $httpMethod = 'POST')
     {
         $this->api($name, $httpMethod)->param($param);
 
@@ -172,7 +180,19 @@ abstract class AbstractApplication
         $request->apiId = $this->apiId;
         $request->requestEntity = $this->paramObject;
 
-        $this->syncAPIClient->send($request, $this->resultObject, $this->requestPolicy);
-        return $this->resultObject;
+        $response = $this->syncAPIClient->send($request, $this->resultObject, $this->requestPolicy, true);
+
+        switch($this->config['response_type']) {
+            case 'array':
+                return json_decode($response, true);
+            case 'json':
+                return $response;
+            case 'object':
+                return json_decode($response);
+            case 'raw':
+                return $this->resultObject;
+            default:
+                return $response;
+        }
     }
 }
