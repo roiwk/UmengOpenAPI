@@ -1,7 +1,7 @@
 # 简介
 
 一个简单,好用的友盟open-api的包...
-封装了友盟官方open-api的sdk, Tag 为官方sdk版本
+封装了友盟官方open-api的sdk, 官方sdk版本1.1.4
 
 > [umeng官方文档](https://developer.umeng.com/open-api/state)
 
