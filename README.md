@@ -17,6 +17,9 @@ composer require roiwk/umeng-open-api
 [此示例的umeng文档](https://developer.umeng.com/open-api/docs/com.umeng.umini/umeng.umini.getTotalUser/1)
 
 ```php
+
+require 'path/to/autoload.php';
+
 use Roiwk\UmengOpenAPI\Factory;
 
 $app = Factory::umini([
@@ -27,12 +30,11 @@ $app = Factory::umini([
     'response_type' => 'json',
 ]);
 
-// 参数1:api名 (com.umeng.umini:umeng.umini.getTotalUser-1, 传"getShareOverview" 即可)
+// 参数1:api名 (com.umeng.umini:umeng.umini.getTotalUser-1, 传"getTotalUser" 即可)
 // 参数2: 请求参数数组
-$app->get('getShareOverview', [
+$app->get('getTotalUser', [
     'fromDate'  => '2020-11-01',
     'toDate'    => '2020-11-01',
-    'timeUnit'  => 'day',
     'pageIndex' => 1,
     'pageSize'  => 10,
 ]);
