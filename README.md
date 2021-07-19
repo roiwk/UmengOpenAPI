@@ -18,7 +18,7 @@ composer require roiwk/umeng-open-api
 
 ```php
 
-require 'path/to/autoload.php';
+require_once 'path/to/autoload.php';
 
 use Roiwk\UmengOpenAPI\Factory;
 
